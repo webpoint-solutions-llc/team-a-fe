@@ -13,7 +13,7 @@ type Props = {
  */
 export default function TableBottom({ pagination }: Props) {
   const search = useSearch({
-    from: "/(auth)/_auth/projects/",
+    from: "/(auth)/_auth/projects/$projectId",
   });
 
   const navigate = useNavigate({

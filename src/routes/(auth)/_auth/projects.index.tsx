@@ -1,5 +1,5 @@
 import ProjectsTable from "@/components/modules/projects-table/table";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import z from "zod";
 
 const searchParamsSchema = z.object({
@@ -20,6 +20,8 @@ function RouteComponent() {
     <div className="px-8 py-10">
       <div className="container">
         <ProjectsTable />
+
+        <Outlet />
       </div>
     </div>
   );

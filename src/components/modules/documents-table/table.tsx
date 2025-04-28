@@ -17,15 +17,16 @@ import { DateTime } from "luxon";
 import ProjectStatusChip from "@/components/common/project-status-chip";
 import { TableTop } from "./table-top";
 
-export default function ProjectsDocumentsTable() {
-  const search = useSearch({
-    from: "/(auth)/_auth/projects/",
-  });
+interface ProjectDocumentsTableProps {
+  projectId: string;
+}
 
-  const projectsResponse = useGetProjects({
-    page: search.page,
-    limit: search.limit,
-  });
+export default function ProjectsDocumentsTable(
+  props: ProjectDocumentsTableProps,
+) {
+  const projectId = props.projectId;
+
+  const projectsResponse = useGetProjects();
 
   return (
     <Table

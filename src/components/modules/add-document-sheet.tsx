@@ -26,14 +26,6 @@ export default function AddDocumentDrawer(props: AddDocumentDrawerProps) {
               <DrawerBody>
                 <AddDocumentForm />
               </DrawerBody>
-              <DrawerFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </DrawerFooter>
             </>
           )}
         </DrawerContent>
