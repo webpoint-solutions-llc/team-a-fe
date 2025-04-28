@@ -1,36 +1,21 @@
-# Stage 1: Build
+# Stage 1: install
 FROM node:22-alpine AS build
-
 WORKDIR /app
-
-# Copy package.json and yarn.lock
 COPY package*.json yarn.lock ./
-
-# Install dependencies
-RUN yarn
-
-# Copy the rest of the app's source code
+RUN yarn install --frozen-lockfile
 COPY . .
+RUN yarn build && yarn cache clean --all
 
-# Build the Vite app (this will create the "dist" folder)
-RUN yarn build
-
-# Stage 2: Runtime
-FROM node:22-alpine
-
-# Set working directory
+# Stage 2: build
+FROM node:22-alpine AS prune
 WORKDIR /app
-
-# Copy only the built files from the build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./package.json
 COPY --from=build /app/yarn.lock ./yarn.lock
+RUN yarn install --production --frozen-lockfile && yarn cache clean --all
 
-# Install only production dependencies
-RUN yarn install --production
-
-# Expose the port that serve will run on
-EXPOSE 3000
-
-# Ensure the app listens on 0.0.0.0
-CMD ["npm", "run", "start", "--", "--host", "0.0.0.0"]
+# Stage 3: runtime
+FROM nginx:alpine AS runtime
+COPY --from=prune /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

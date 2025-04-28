@@ -1,2 +1,7 @@
-node_module
+# .dockerignore
+node_modules
+dist
 .vscode
+.git
+Dockerfile
+README.md
