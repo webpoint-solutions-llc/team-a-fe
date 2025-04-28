@@ -20,8 +20,6 @@ function RouteComponent() {
     <div className="px-8 py-10">
       <div className="container">
         <ProjectsTable />
-
-        <Outlet />
       </div>
     </div>
   );

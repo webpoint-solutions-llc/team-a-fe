@@ -22,31 +22,28 @@ export default function DocumentCategoriesSelect({
   const navigate = useNavigate();
 
   return (
-    <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
-      <Select
-        value={search.categoryId}
-        className="max-w-xs"
-        placeholder="Category"
-        isLoading={isLoading}
-        items={data?.data?.data || []}
-        errorMessage={props.errorMessage}
-        isInvalid={Boolean(props.errorMessage)}
-        onChange={(e) => {
-          const value = e.target.value;
+    <Select
+      // @ts-ignore
+      selectedKeys={[search.categoryId]}
+      className="max-w-xs"
+      placeholder="Category"
+      isLoading={isLoading}
+      items={data?.data?.data || []}
+      errorMessage={props.errorMessage}
+      isInvalid={Boolean(props.errorMessage)}
+      onChange={(e) => {
+        const value = e.target.value;
 
-          if (!disableSearchAppend && value) {
-            navigate({
-              // @ts-ignore
-              search: (pre) => ({ ...pre, categoryId: value }),
-            });
-          }
-          props.onSelect?.(value);
-        }}
-      >
-        {(category) => (
-          <SelectItem key={category.id}>{category.name}</SelectItem>
-        )}
-      </Select>
-    </div>
+        if (!disableSearchAppend && value) {
+          navigate({
+            // @ts-ignore
+            search: (pre) => ({ ...pre, categoryId: value }),
+          });
+        }
+        props.onSelect?.(value);
+      }}
+    >
+      {(category) => <SelectItem key={category.id}>{category.name}</SelectItem>}
+    </Select>
   );
 }

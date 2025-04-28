@@ -20,12 +20,21 @@ export const TableTop: React.FC<TableTopProps> = ({ projectId }) => {
 
   const navigate = useNavigate();
 
+  const hasFilters = searchParams.categoryId || searchParams.search;
+
   const handleSearch = useDebouncedCallback(async (value: string) => {
     navigate({
       // @ts-expect-error type issue
       search: (pre) => ({ ...pre, search: value }),
     });
   }, 500);
+
+  const clearFilter = () => {
+    navigate({
+      // @ts-ignore
+      search: {},
+    });
+  };
 
   return (
     <div>
@@ -64,6 +73,16 @@ export const TableTop: React.FC<TableTopProps> = ({ projectId }) => {
         />
 
         <DocumentCategoriesSelect projectId={projectId} />
+
+        {hasFilters && (
+          <Button
+            color="danger"
+            className="opacity-50 hover:opacity-100"
+            onPress={clearFilter}
+          >
+            Clear Filters
+          </Button>
+        )}
       </div>
     </div>
   );
