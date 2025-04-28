@@ -21,5 +21,8 @@ export default defineConfig({
     alias: {
       "@": resolve(__dirname, "./src"),
     },
+    server: {
+      allowedHosts: ["project-vault.do.webpoint.io"], // Add this line
+    },
   },
 });
