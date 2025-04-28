@@ -1,11 +1,32 @@
-import { Button, Input } from "@heroui/react";
-import { Link } from "@tanstack/react-router";
-import { Plus, Search } from "lucide-react";
 import React from "react";
+import { Plus, Search } from "lucide-react";
+import { Button, Input } from "@heroui/react";
 import AddDocumentDrawer from "../add-document-sheet";
+import { useDebouncedCallback } from "@mantine/hooks";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import DocumentCategoriesSelect from "@/components/common/document-categories";
 
-export const TableTop: React.FC = () => {
+interface TableTopProps {
+  projectId: string;
+}
+export const TableTop: React.FC<TableTopProps> = ({ projectId }) => {
+  const searchParams = useSearch({
+    from: "/(auth)/_auth/projects/$projectId",
+  });
+
+  const [search, setSearch] = React.useState(searchParams.search || "");
+
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSearch = useDebouncedCallback(async (value: string) => {
+    navigate({
+      // @ts-expect-error type issue
+      search: (pre) => ({ ...pre, search: value }),
+    });
+  }, 500);
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -29,12 +50,20 @@ export const TableTop: React.FC = () => {
           />
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 flex items-center justify-start gap-3">
         <Input
+          value={search}
           startContent={<Search />}
           placeholder="Search"
           className="max-w-[400px]"
+          onChange={(e) => {
+            const q = e.target.value;
+            setSearch(q);
+            handleSearch(q);
+          }}
         />
+
+        <DocumentCategoriesSelect projectId={projectId} />
       </div>
     </div>
   );

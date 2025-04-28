@@ -5,9 +5,8 @@ import { z } from "zod";
 const searchParamsSchema = z.object({
   page: z.number().optional().catch(1),
   limit: z.number().optional().catch(15),
-  sort: z.string().optional(),
-  order: z.string().optional(),
-  search: z.string().optional(),
+  search: z.string().optional().catch(""),
+  categoryId: z.string().optional().catch(""),
 });
 
 export const Route = createFileRoute("/(auth)/_auth/projects/$projectId")({

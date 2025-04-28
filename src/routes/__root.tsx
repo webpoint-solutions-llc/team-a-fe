@@ -1,8 +1,7 @@
-import type { AuthState } from "@/store/auth-store";
-
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import type { StoreApi } from "zustand";
-// import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+
+import type { AuthState } from "@/store/auth-store";
 
 export interface IRouteContext {
   authStore: StoreApi<AuthState>;

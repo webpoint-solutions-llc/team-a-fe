@@ -8,14 +8,12 @@ import {
   TableColumn,
 } from "@heroui/react";
 
-import { useSearch } from "@tanstack/react-router";
-import { useGetProjects } from "@/services/projects";
-
-import TableBottom from "./table-bottom";
 import { formatDateTime } from "@/utils/date-time";
-import { DateTime } from "luxon";
-import ProjectStatusChip from "@/components/common/project-status-chip";
+import { useGetProjectDocuments } from "@/services/project-documents";
+
 import { TableTop } from "./table-top";
+import TableBottom from "./table-bottom";
+import { useSearch } from "@tanstack/react-router";
 
 interface ProjectDocumentsTableProps {
   projectId: string;
@@ -26,13 +24,23 @@ export default function ProjectsDocumentsTable(
 ) {
   const projectId = props.projectId;
 
-  const projectsResponse = useGetProjects();
+  const searchParams = useSearch({
+    from: "/(auth)/_auth/projects/$projectId",
+  });
+
+  const { data: documentsRes, isLoading } = useGetProjectDocuments({
+    projectId,
+    search: searchParams.search,
+    categoryId: searchParams.categoryId,
+  });
+
+  const hasFilters = searchParams.search || searchParams.categoryId;
 
   return (
     <Table
       removeWrapper
       isHeaderSticky
-      topContent={<TableTop />}
+      topContent={<TableTop projectId={projectId} />}
       bottomContent={
         <TableBottom
           pagination={{
@@ -42,18 +50,21 @@ export default function ProjectsDocumentsTable(
       }
     >
       <TableHeader>
-        <TableColumn>Project</TableColumn>
-        <TableColumn>Members</TableColumn>
-        <TableColumn>Status</TableColumn>
-        <TableColumn>KickOff</TableColumn>
-        <TableColumn>Deadline</TableColumn>
+        <TableColumn>Title</TableColumn>
+        <TableColumn>Link</TableColumn>
+        <TableColumn>Category</TableColumn>
+        <TableColumn>Created By</TableColumn>
+        <TableColumn>Tags</TableColumn>
+        <TableColumn>Created At</TableColumn>
       </TableHeader>
 
       <TableBody
-        isLoading={projectsResponse.isLoading}
-        emptyContent={<div>No Projects!</div>}
+        isLoading={isLoading}
+        emptyContent={
+          <div>{hasFilters ? "No results found" : "No documents added."}</div>
+        }
         loadingContent={<Spinner label="Loading..." />}
-        items={projectsResponse.data?.projects || []}
+        items={documentsRes?.data?.data || []}
       >
         {(item) => (
           <TableRow
@@ -66,31 +77,29 @@ export default function ProjectsDocumentsTable(
               <p>{item.description}</p>
             </TableCell>
 
-            {/* MEMBERS */}
             <TableCell>
-              {item.projectMembers.map((m) => (
-                <span key={m.id}>{m.user.fullName}</span>
-              ))}
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferer"
+                className="text-ellipsis text-primary-600"
+              >
+                {item.link}
+              </a>
             </TableCell>
 
-            {/* STATUS */}
-            <TableCell>
-              <ProjectStatusChip size="sm" status={item.status} />
+            <TableCell>{item.category.name}</TableCell>
+
+            <TableCell className="capitalize">
+              {item.createdBy.fullName}
             </TableCell>
 
-            {/* KICKOFF DATE */}
             <TableCell>
-              {formatDateTime(item.kickoffDate, {
-                format: DateTime.DATE_MED,
-              })}
+              <div className="flex flex-wrap items-center gap-2">
+                {item.tags?.split(",").map((s) => <span key={s}>{s}</span>)}
+              </div>
             </TableCell>
-
-            {/* DEADLINE DATE */}
-            <TableCell>
-              {formatDateTime(item.deadline, {
-                format: DateTime.DATE_MED,
-              })}
-            </TableCell>
+            <TableCell>{formatDateTime(item.createdAt)}</TableCell>
           </TableRow>
         )}
       </TableBody>
