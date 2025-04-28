@@ -1,9 +1,8 @@
-import type { UserRole } from "@/constants/user";
+// import type { UserRole } from "@/constants/user";
 
 export interface IUserMeta {
   id: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
-  role: UserRole;
+  // role: UserRole;
 }

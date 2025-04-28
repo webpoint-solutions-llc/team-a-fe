@@ -10,7 +10,6 @@ import {
 
 import { Link, useSearch } from "@tanstack/react-router";
 import { useGetProjects } from "@/services/projects";
-
 import TableBottom from "./table-bottom";
 import { formatDateTime } from "@/utils/date-time";
 import { DateTime } from "luxon";
@@ -26,7 +25,7 @@ export default function ProjectsTable() {
     page: search.page,
     limit: search.limit,
   });
-
+  console.log("projectsResponse", projectsResponse?.data?.data?.projects);
   return (
     <Table
       removeWrapper
@@ -52,7 +51,7 @@ export default function ProjectsTable() {
         isLoading={projectsResponse.isLoading}
         emptyContent={<div>No Projects!</div>}
         loadingContent={<Spinner label="Loading..." />}
-        items={projectsResponse.data?.projects || []}
+        items={projectsResponse?.data?.data?.projects || []}
       >
         {(item) => (
           <TableRow
@@ -77,7 +76,7 @@ export default function ProjectsTable() {
 
             {/* MEMBERS */}
             <TableCell>
-              {item.projectMembers.map((m) => (
+              {item?.projectMembers?.map((m) => (
                 <span key={m.id}>{m.user.fullName}</span>
               ))}
             </TableCell>

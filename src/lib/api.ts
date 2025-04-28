@@ -15,7 +15,7 @@ import {
   setRefreshToken,
 } from "@/utils/access-token";
 
-const BASE_URL = "";
+const BASE_URL = "http://10.10.1.93:5000/api/";
 const TOKEN_REFRESH__URL = urlJoin(BASE_URL, "");
 
 // ---  Axios instance ---

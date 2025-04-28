@@ -10,7 +10,6 @@ export const Route = createFileRoute("/login")({
   component: LoginPageComponent,
   validateSearch: loginPageSearchParams,
   beforeLoad: ({ search, context }) => {
-    // if user is already logged in redirect to redirect url if available else to dashboard page
     if (Boolean(context.authStore.getState().user)) {
       throw redirect({
         to: search.redirect ?? "/dashboard",
