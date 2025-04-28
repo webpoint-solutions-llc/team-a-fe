@@ -16,8 +16,22 @@ import {
   createDocumentSchema,
   type CreateDocumentInput,
 } from "@/shcemas/project";
+import DocumentCategoriesSelect from "../common/document-categories";
+import React from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { GET_PROJECTS } from "@/constants/query-keys/project";
 
-const AddDocumentForm = () => {
+interface AddDocumentFormProps {
+  projectId: string;
+  onAddSuccess?: () => void;
+}
+
+const AddDocumentForm: React.FC<AddDocumentFormProps> = ({
+  projectId,
+  onAddSuccess,
+}) => {
+  const qc = useQueryClient();
+
   const form = useForm<CreateDocumentInput>({
     defaultValues: {
       title: "",
@@ -25,7 +39,7 @@ const AddDocumentForm = () => {
       link: "",
       tags: "",
       visibility: "public",
-      categoryId: "0048be44-b57d-47f4-a2e1-aa314dc5ca68",
+      categoryId: undefined,
     },
     resolver: zodResolver(createDocumentSchema),
   });
@@ -34,22 +48,25 @@ const AddDocumentForm = () => {
     try {
       const payload = {
         ...data,
-        categoryId: "0048be44-b57d-47f4-a2e1-aa314dc5ca68",
       };
 
-      await api.post("/documents", payload);
+      const res = await api.post("/documents", payload);
 
-      form.reset();
-      addToast({
-        title: "Document created successfully",
-        description: "Your document has been created.",
-      });
+      if (res) {
+        form.reset();
+        qc.invalidateQueries({
+          queryKey: [GET_PROJECTS],
+        });
+        addToast({
+          title: "Document created successfully",
+          description: "Your document has been created.",
+        });
+        onAddSuccess?.();
+      }
     } catch (error) {
       console.error(error);
     }
   });
-
-  console.log(form.formState.errors);
 
   return (
     <div>
@@ -124,18 +141,44 @@ const AddDocumentForm = () => {
                   label="Visibility"
                   labelPlacement="outside"
                   placeholder="Select visibility"
+                  // @ts-ignore
                   selectedKey={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
                   errorMessage={form.formState.errors.visibility?.message}
                   isInvalid={!!form.formState.errors.visibility}
                 >
-                  <SelectItem key="public" value="public">
+                  <SelectItem
+                    key="public"
+                    // @ts-ignore
+                    value="public"
+                  >
                     Public
                   </SelectItem>
-                  <SelectItem key="private" value="private">
+
+                  <SelectItem
+                    key="private"
+                    // @ts-ignore
+                    value="private"
+                  >
                     Private
                   </SelectItem>
                 </Select>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <DocumentCategoriesSelect
+                  label="Category"
+                  className="max-w-full"
+                  projectId={projectId}
+                  disableSearchAppend
+                  errorMessage={form.formState?.errors?.categoryId?.message}
+                  onSelect={field.onChange}
+                  value={field.value}
+                />
               )}
             />
           </div>

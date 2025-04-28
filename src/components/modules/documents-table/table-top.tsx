@@ -53,7 +53,7 @@ export const TableTop: React.FC<TableTopProps> = ({ projectId }) => {
           </Button>
 
           <AddDocumentDrawer
-            categoryId="ss"
+            projectId={projectId}
             onOpenChange={setIsDrawerOpen}
             open={isDrawerOpen}
           />

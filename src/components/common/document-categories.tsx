@@ -1,5 +1,6 @@
 import { Select, SelectItem } from "@heroui/react";
 
+import { cn } from "@/utils/cn";
 import { useGetCategories } from "@/services/get-categories";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 
@@ -8,9 +9,15 @@ interface CategoriesSelectProps {
   errorMessage?: string;
   disableSearchAppend?: boolean;
   onSelect?: (value: string) => void;
+  className?: string;
+  label?: string;
+  value?: string;
 }
 export default function DocumentCategoriesSelect({
   disableSearchAppend = false,
+  className,
+  label,
+  value,
   ...props
 }: CategoriesSelectProps) {
   const { data, isLoading } = useGetCategories(props.projectId);
@@ -23,9 +30,11 @@ export default function DocumentCategoriesSelect({
 
   return (
     <Select
+      label={label}
+      labelPlacement="outside"
       // @ts-ignore
-      selectedKeys={[search.categoryId]}
-      className="max-w-xs"
+      selectedKeys={value ? [value] : [search.categoryId]}
+      className={cn(["max-w-xs", className])}
       placeholder="Category"
       isLoading={isLoading}
       items={data?.data?.data || []}

@@ -6,15 +6,18 @@ import {
   createProjectSchema,
   type CreateProjectFormValues,
 } from "@/shcemas/project";
-import { addToast, Button, Input, Textarea } from "@heroui/react";
-import { ProjectStatus } from "@/types/project";
-import { Form, FormField } from "@/components/ui/form";
 import api from "@/lib/api";
+import { ProjectStatus } from "@/types/project";
 import { useNavigate } from "@tanstack/react-router";
+import { Form, FormField } from "@/components/ui/form";
+import { addToast, Button, Input, Textarea } from "@heroui/react";
+
 import {
   useQueryClient,
   type InvalidateQueryFilters,
 } from "@tanstack/react-query";
+
+import { GET_PROJECTS } from "@/constants/query-keys/project";
 
 const AddProjectForm = () => {
   const form = useForm<CreateProjectFormValues>({
@@ -36,8 +39,8 @@ const AddProjectForm = () => {
           description: "Your project has been created successfully.",
         });
         form.reset();
-        qc.invalidateQueries(["projects"] as InvalidateQueryFilters);
         navigate({ to: "/projects" });
+        qc.invalidateQueries([GET_PROJECTS] as InvalidateQueryFilters);
       } else {
         addToast({
           title: "Project Creation Failed",

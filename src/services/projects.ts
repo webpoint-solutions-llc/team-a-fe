@@ -1,31 +1,10 @@
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
+import type { IProject } from "@/types/project";
 import { GET_PROJECTS } from "@/constants/query-keys/project";
 import type { IPaginationFilter, IResponsePayload } from "@/types/common";
-import { mockProjects } from "@/mock/projects";
-import type { IProject } from "@/types/project";
 
 interface GetProjectOptions extends IPaginationFilter {}
-
-// const getProjects = async (options?: GetProjectOptions) => {
-//   return {
-//     pagination: {
-//       page: options?.page || 1,
-//       limit: 10,
-//       total: 10,
-//     },
-//     projects: mockProjects,
-//   };
-//   //   const searchParams = qs.stringify(options);
-//   //   const res = await api.get<
-//   //     IResponsePayload<{
-//   //       pagination: IPagination;
-//   //       projects: Array<IProject>;
-//   //     }>
-//   //   >(urlJoin("/projects", `?${searchParams}`));
-
-//   //   return res.data;
-// };
 
 export const useGetProjects = (options?: GetProjectOptions) => {
   return useQuery({
