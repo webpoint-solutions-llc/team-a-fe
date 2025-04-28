@@ -8,8 +8,8 @@ interface ILoginFormProps {
   className?: string;
 }
 export const LoginForm: React.FC<ILoginFormProps> = ({ className }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState("gopal.pokhrel@webpoint.io");
+  const [password, setPassword] = React.useState("Gopal123@");
   const [remember, setRemember] = React.useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
 

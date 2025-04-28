@@ -40,7 +40,9 @@ export default function Sidebar() {
         "p-2",
       ])}
     >
-      <div className="mb-2 px-4 py-4 text-2xl font-bold">BRAND</div>
+      <div className="mb-2 px-4 py-4 text-2xl font-bold">
+        <img src="/logo.png" alt="" />
+      </div>
 
       {/* nav menu */}
       <div className="flex grow flex-col gap-y-0.5 overflow-y-auto">
