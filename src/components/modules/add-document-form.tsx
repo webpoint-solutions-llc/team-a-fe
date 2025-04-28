@@ -19,7 +19,7 @@ import {
 import DocumentCategoriesSelect from "../common/document-categories";
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { GET_PROJECTS } from "@/constants/query-keys/project";
+import { LIST_PROJECT_DOCUMENTS } from "@/services/project-documents";
 
 interface AddDocumentFormProps {
   projectId: string;
@@ -55,7 +55,7 @@ const AddDocumentForm: React.FC<AddDocumentFormProps> = ({
       if (res) {
         form.reset();
         qc.invalidateQueries({
-          queryKey: [GET_PROJECTS],
+          queryKey: [LIST_PROJECT_DOCUMENTS],
         });
         addToast({
           title: "Document created successfully",

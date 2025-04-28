@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { IResponsePayload } from "@/types/common";
 import type { IProjectDocument } from "@/types/document";
 
-const LIST_PROJECT_DOCUMENTS = "list-project-docs";
+export const LIST_PROJECT_DOCUMENTS = "list-project-docs";
 
 interface GetProjectDocumentsPayload {
   projectId: string;
