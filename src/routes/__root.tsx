@@ -1,4 +1,3 @@
-import { RouteLoadProgress } from "@/components/common/route-load-progress";
 import type { AuthState } from "@/store/auth-store";
 
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
@@ -16,7 +15,6 @@ export const Route = createRootRouteWithContext<IRouteContext>()({
 function RootLayout() {
   return (
     <>
-      <RouteLoadProgress />
       <Outlet />
       {/* <TanStackRouterDevtools /> */}
     </>
