@@ -1,11 +1,21 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  Input,
+  Textarea,
+  Select,
+  SelectItem,
+  addToast,
+} from "@heroui/react";
+import { Form, FormField } from "@/components/ui/form";
+import api from "@/lib/api";
 import {
   createDocumentSchema,
   type CreateDocumentInput,
 } from "@/shcemas/project";
-import { Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
-import { Form, FormField } from "@/components/ui/form";
 
 const AddDocumentForm = () => {
   const form = useForm<CreateDocumentInput>({
@@ -15,15 +25,31 @@ const AddDocumentForm = () => {
       link: "",
       tags: "",
       visibility: "public",
-      createdById: "", // This should be set from the logged-in user
-      categoryId: "", // This should be populated from available categories
+      categoryId: "0048be44-b57d-47f4-a2e1-aa314dc5ca68",
     },
     resolver: zodResolver(createDocumentSchema),
   });
 
-  const handleCreateDocument = form.handleSubmit((data) => {
-    console.log(data);
+  const handleCreateDocument = form.handleSubmit(async (data) => {
+    try {
+      const payload = {
+        ...data,
+        categoryId: "0048be44-b57d-47f4-a2e1-aa314dc5ca68",
+      };
+
+      await api.post("/documents", payload);
+
+      form.reset();
+      addToast({
+        title: "Document created successfully",
+        description: "Your document has been created.",
+      });
+    } catch (error) {
+      console.error(error);
+    }
   });
+
+  console.log(form.formState.errors);
 
   return (
     <div>
@@ -38,8 +64,8 @@ const AddDocumentForm = () => {
                   labelPlacement="outside"
                   label="Document Title"
                   placeholder="Enter document title"
-                  errorMessage={form.formState?.errors?.title?.message}
-                  isInvalid={!!form.formState?.errors?.title}
+                  errorMessage={form.formState.errors.title?.message}
+                  isInvalid={!!form.formState.errors.title}
                   {...field}
                 />
               )}
@@ -53,8 +79,8 @@ const AddDocumentForm = () => {
                   labelPlacement="outside"
                   label="Document Description"
                   placeholder="Enter document description"
-                  errorMessage={form.formState?.errors?.description?.message}
-                  isInvalid={!!form.formState?.errors?.description}
+                  errorMessage={form.formState.errors.description?.message}
+                  isInvalid={!!form.formState.errors.description}
                   {...field}
                 />
               )}
@@ -68,8 +94,8 @@ const AddDocumentForm = () => {
                   labelPlacement="outside"
                   label="Document URL"
                   placeholder="Enter document URL"
-                  errorMessage={form.formState?.errors?.link?.message}
-                  isInvalid={!!form.formState?.errors?.link}
+                  errorMessage={form.formState.errors.link?.message}
+                  isInvalid={!!form.formState.errors.link}
                   {...field}
                 />
               )}
@@ -83,8 +109,8 @@ const AddDocumentForm = () => {
                   labelPlacement="outside"
                   label="Tags"
                   placeholder="Enter comma-separated tags"
-                  errorMessage={form.formState?.errors?.tags?.message}
-                  isInvalid={!!form.formState?.errors?.tags}
+                  errorMessage={form.formState.errors.tags?.message}
+                  isInvalid={!!form.formState.errors.tags}
                   {...field}
                 />
               )}
@@ -98,10 +124,10 @@ const AddDocumentForm = () => {
                   label="Visibility"
                   labelPlacement="outside"
                   placeholder="Select visibility"
-                  defaultSelectedKeys={[field.value]}
+                  selectedKey={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
-                  errorMessage={form.formState?.errors?.visibility?.message}
-                  isInvalid={!!form.formState?.errors?.visibility}
+                  errorMessage={form.formState.errors.visibility?.message}
+                  isInvalid={!!form.formState.errors.visibility}
                 >
                   <SelectItem key="public" value="public">
                     Public
@@ -109,25 +135,6 @@ const AddDocumentForm = () => {
                   <SelectItem key="private" value="private">
                     Private
                   </SelectItem>
-                </Select>
-              )}
-            />
-
-            {/* Note: categoryId should be populated from available categories */}
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <Select
-                  label="Category"
-                  labelPlacement="outside"
-                  placeholder="Select category"
-                  defaultSelectedKeys={[field.value]}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  errorMessage={form.formState?.errors?.categoryId?.message}
-                  isInvalid={!!form.formState?.errors?.categoryId}
-                >
-                  {/* Add category options here */}
                 </Select>
               )}
             />

@@ -31,8 +31,6 @@ export const updateUserSchema = z.object({
 
 export const createProjectSchema = z.object({
   title: z.string().nonempty("Title is required"),
-  kickoffDate: z.union([z.string(), z.date()]),
-  deadline: z.union([z.string(), z.date()]),
   description: z.string().optional(),
   status: z.nativeEnum(ProjectStatus).optional(),
 });
@@ -108,7 +106,6 @@ export const createDocumentSchema = z.object({
   link: z.string().url("Invalid URL"),
   tags: z.string().optional(),
   visibility: z.enum(["public", "private"]).default("public").optional(),
-  createdById: z.string().refine(isValidUUID, { message: "Invalid user UUID" }),
   categoryId: z
     .string()
     .refine(isValidUUID, { message: "Invalid category UUID" }),
