@@ -1,0 +1,8 @@
+{
+  "welcome": "Welcome to my app",
+  "description": "This app supports multiple languages.",
+  "photos": "You have {numPhotos, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}",
+  "date": "Today is: {now, date, ::yyyyMMdda}",
+  "gender": "{gender, select, male {He liked your post.} female {She liked your post.} other {They liked your post.}}",
+  "gender-plural": "{gender, select, male {{count, plural, one {He has one message} other {He has # messages} }} female {{count, plural, one {She has one message} other {She has # messages} }} other {{count, plural, one {They have one message} other {They have # messages}}}}"
+}

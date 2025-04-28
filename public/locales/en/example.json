@@ -1,0 +1,10 @@
+{
+  "welcome": "Welcome to my app",
+  "description": "This app supports multiple languages.",
+  "photos": "You have {numPhotos, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}",
+  "date": "Today is: {now, date, ::yyyyMMdda}",
+  "gender": "{gender, select, male {He liked your post.} female {She liked your post.} other {They liked your post.}}",
+  "gender-plural": "{gender, select, male {{count, plural, =0 {He has no message} =1 {he has a message} other {He has # messages} }} female {{count, plural,  =0 {he has no message} =1 {She has a message} other {She has # messages} }} other {{count, plural,  =0 {They have no message} =1 {They have one message} other {They have # messages}}}}",
+  "currency": "The price is: {price, number, ::currency/EUR}",
+  "list-conjunction": "{items, list, style: long, type: conjunction}"
+}

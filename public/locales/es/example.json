@@ -1,0 +1,10 @@
+{
+  "welcome": "Bienvenido a mi aplicación",
+  "description": "Esta aplicación admite varios idiomas.",
+  "photos": "Tienes {numPhotos, plural, =0 {ninguna foto.} =1 {una foto.} other {# fotos.}}",
+  "date": "Hoy es: {now, date, ::yyyyMMdda}",
+  "gender": "{gender, select, male {Le gustó tu publicación.} female {Le gustó tu publicación.} other {Les gustó tu publicación.}}",
+  "gender-plural": "{gender, select, male {{count, plural, one {Él tiene un mensaje} other {Él tiene # mensajes} }} female {{count, plural, one {Ella tiene un mensaje} other {Ella tiene # mensajes} }} other {{count, plural, one {Ellos tienen un mensaje} other {Ellos tienen # mensajes}}}}",
+  "currency": "El precio es: {price, number, ::currency/EUR}",
+  "list-conjunction": "{items, list, style: long, type: conjunction}"
+}

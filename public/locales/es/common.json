@@ -1,0 +1,5 @@
+{
+  "welcome": "Bienvenue dans mon application",
+  "description": "Cette application prend en charge plusieurs langues.",
+  "photos": "Tienes {numPhotos, plural, =0 {ninguna foto.} =1 {una foto.} other {# fotos.}}"
+}
